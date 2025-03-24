@@ -1,7 +1,6 @@
 const sequelize = require("./db");
 const User = require("../models/User");
 const Skill = require("../models/skill");
-const User_Skills = require("../models/userskill");
 
 const setupDatabase = async () => {
   try {
