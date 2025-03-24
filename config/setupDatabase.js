@@ -1,4 +1,4 @@
-const sequelize = require("./db"); // ✅ Reuse connection
+const sequelize = require("./db");
 const User = require("../models/User");
 const Skill = require("../models/skill");
 const User_Skills = require("../models/userskill");
@@ -6,10 +6,9 @@ const User_Skills = require("../models/userskill");
 const setupDatabase = async () => {
   try {
     await sequelize.sync();
-    console.log("✅ Tables are created if they don’t exist.");
     process.exit();
   } catch (error) {
-    console.error("❌ Error setting up database:", error);
+    console.error("Error setting up database:", error);
     process.exit(1);
   }
 };

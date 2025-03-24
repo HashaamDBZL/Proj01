@@ -3,9 +3,8 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
-app.use(bodyParser.json()); // To parse JSON requests
+app.use(bodyParser.json());
 
-// Use routes
 app.use("/api", userRoutes);
 
 const PORT = 5000;
