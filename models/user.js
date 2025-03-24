@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); //
+const { Skill } = require("./skill");
 
 const User = sequelize.define(
   "user",
@@ -34,4 +35,45 @@ const User = sequelize.define(
   }
 );
 
-module.exports = User;
+User.belongsToMany(Skill, {
+  through: "User_Skills",
+  foreignKey: "userId",
+  timestamps: false,
+});
+Skill.belongsToMany(User, {
+  through: "User_Skills",
+  foreignKey: "skillId",
+  timestamps: false,
+});
+
+const getUsers = async () => {
+  return await User.findAll();
+};
+
+const addUser = async (firstName, lastName, email, bio, city) => {
+  return await User.create({ firstName, lastName, email, bio, city });
+};
+
+const deleteUser = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) return null;
+  await user.destroy();
+  return user;
+};
+
+const addUserSkill = async (userId, skillId) => {
+  try {
+    const user = await User.findByPk(userId);
+    const skill = await Skill.findByPk(skillId);
+
+    if (!user || !skill) {
+      throw new Error("User or Skill not found");
+    }
+    await user.addSkill(skill);
+    return { message: "Skill assigned to user successfully!" };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+module.exports = { User, getUsers, addUser, deleteUser, addUserSkill };

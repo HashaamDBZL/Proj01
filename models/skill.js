@@ -20,4 +20,19 @@ const Skill = sequelize.define(
   }
 );
 
-module.exports = Skill;
+const getSkills = async () => {
+  return await Skill.findAll();
+};
+
+const addSkill = async (name) => {
+  return await Skill.create({ name });
+};
+
+const deleteSkill = async (id) => {
+  const skill = await Skill.findByPk(id);
+  if (!skill) return null;
+  await skill.destroy();
+  return skill;
+};
+
+module.exports = { Skill, getSkills, addSkill, deleteSkill };
