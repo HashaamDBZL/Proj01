@@ -81,7 +81,7 @@ const getUserSkills = async (userId) => {
     const user = await User.findByPk(userId, {
       include: {
         model: Skill,
-        through: { attributes: [] }, // Prevents returning extra metadata
+        through: { attributes: [] },
       },
     });
 
@@ -89,7 +89,7 @@ const getUserSkills = async (userId) => {
       throw new Error("User not found");
     }
 
-    return user.skills; // Return the skills array
+    return user.skills;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -100,7 +100,7 @@ const getSkillUsers = async (skillId) => {
     const skill = await Skill.findByPk(skillId, {
       include: {
         model: User,
-        through: { attributes: [] }, // Exclude junction table attributes
+        through: { attributes: [] },
       },
     });
 
@@ -108,7 +108,7 @@ const getSkillUsers = async (skillId) => {
       throw new Error("Skill not found");
     }
 
-    return skill.users; // Ensure correct casing (Users vs users)
+    return skill.users;
   } catch (error) {
     throw new Error(error.message);
   }
