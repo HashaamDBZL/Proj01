@@ -88,7 +88,6 @@ const UsersTable: React.FC = () => {
     fetch(query)
       .then((res) => res.json())
       .then((data: { name: string; email: string; skills: string[] }[]) => {
-        console.log("Search API Response:", data); // Debugging
         const formattedData = data.map((user, index) => ({
           id: index.toString(), // Assign a temporary ID if missing
           firstName: user.name.split(" ")[0] || "N/A",
