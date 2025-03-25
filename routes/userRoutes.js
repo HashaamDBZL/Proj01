@@ -1,5 +1,10 @@
 const express = require("express");
-const { getUsers, addUser, deleteUser } = require("../models/User");
+const {
+  getUsers,
+  addUser,
+  deleteUser,
+  getUsersWithSkills,
+} = require("../models/User");
 const { searchUsers } = require("../utils/searchUsers");
 
 const router = express.Router();
@@ -7,6 +12,14 @@ const router = express.Router();
 router.get("/users", async (req, res) => {
   try {
     const users = await getUsers();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/users/skills", async (req, res) => {
+  try {
+    const users = await getUsersWithSkills();
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
