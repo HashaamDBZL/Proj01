@@ -1,5 +1,6 @@
 const express = require("express");
 const { getUsers, addUser, deleteUser } = require("../models/User");
+const { searchUsers } = require("../utils/searchUsers");
 
 const router = express.Router();
 
@@ -32,6 +33,18 @@ router.delete("/users/:id", async (req, res) => {
     res.status(200).json({ message: "User deleted", user: deletedUser });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/search", async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ message: "Query is required" });
+
+  try {
+    const users = await searchUsers(query);
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

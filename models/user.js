@@ -114,6 +114,19 @@ const getSkillUsers = async (skillId) => {
   }
 };
 
+async function getUsersWithSkills() {
+  return await User.findAll({
+    include: [{ model: Skill, attributes: ["name"] }],
+  });
+}
+
+async function getUserWithSkills(userId) {
+  return await User.findOne({
+    where: { id: userId },
+    include: [{ model: Skill, attributes: ["name"] }],
+  });
+}
+
 module.exports = {
   User,
   getUsers,
@@ -122,4 +135,6 @@ module.exports = {
   addUserSkill,
   getUserSkills,
   getSkillUsers,
+  getUsersWithSkills,
+  getUserWithSkills,
 };
