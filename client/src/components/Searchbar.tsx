@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import { Input, Space, Button, Switch } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import React, { useState, useEffect, useCallback } from "react";
+import { Input, Switch, Space } from "antd";
 
 interface SearchBarProps {
-  onSearch: (searchText: string, isPartial: boolean) => void;
+  onSearch: (query: string, isPartial: boolean) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [searchText, setSearchText] = useState("");
   const [isPartialSearch, setIsPartialSearch] = useState(false);
 
-  const handleSearch = () => {
+  const debouncedSearch = useCallback(() => {
     onSearch(searchText, isPartialSearch);
-  };
+  }, [searchText, isPartialSearch, onSearch]);
+
+  // Debounced search effect
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      debouncedSearch();
+    }, 500); // 500ms debounce delay
+
+    return () => clearTimeout(delaySearch); // Cleanup previous timeout
+  }, [searchText, isPartialSearch, onSearch]);
 
   return (
     <Space className="mx-auto my-4">
@@ -25,12 +33,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         placeholder="Search users..."
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
-        onPressEnter={handleSearch}
         style={{ width: 300 }}
       />
-      <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
-        Search
-      </Button>
     </Space>
   );
 };
