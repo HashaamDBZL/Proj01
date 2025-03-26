@@ -8,10 +8,16 @@ export async function fetchAllUsers(): Promise<User[]> {
   return res.json();
 }
 
-export async function searchUsers(query: string): Promise<User[]> {
+export async function searchUsers(
+  query: string,
+  isPartial: boolean
+): Promise<User[]> {
   if (!query.trim()) return fetchAllUsers();
 
-  const res = await fetch(`${API_BASE_URL}/search?query=${query}`);
+  const res = await fetch(
+    `${API_BASE_URL}/search?query=${query}&partial=${isPartial}`
+  );
+
   const data = await res.json();
 
   return data.map(

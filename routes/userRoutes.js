@@ -50,11 +50,11 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 router.get("/search", async (req, res) => {
-  const { query } = req.query;
+  const { query, partial } = req.query;
   if (!query) return res.status(400).json({ message: "Query is required" });
 
   try {
-    const users = await searchUsers(query);
+    const users = await searchUsers(query, partial === "true");
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });

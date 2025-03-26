@@ -1,4 +1,3 @@
-// UsersTable.tsx
 import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 import { getColumns } from "./userTableColumns";
@@ -15,8 +14,8 @@ const UsersTable: React.FC = () => {
       .catch((err) => console.error("Error fetching users:", err));
   }, []);
 
-  const handleSearch = (query: string) => {
-    searchUsers(query)
+  const handleSearch = (query: string, isPartial: boolean) => {
+    searchUsers(query, isPartial)
       .then(setUsers)
       .catch((err) => console.error("Error fetching users:", err));
   };
